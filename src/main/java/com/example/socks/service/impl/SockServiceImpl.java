@@ -18,6 +18,12 @@ public class SockServiceImpl implements SockService {
     private final SockMapper sockMapper;
     private final SockRepository sockRepository;
 
+    /**
+     * Регистрирует приход носков на склад.
+     *
+     * @param sockDto Объект {@link SockDto} с информацией о носках, которые поступают на склад.
+     * @return true, если приход носков успешно зарегистрирован, иначе false.
+     */
     @Override
     public boolean registerSocksIncome(SockDto sockDto) {
         if (sockDto.getColor() == null) {
@@ -41,6 +47,13 @@ public class SockServiceImpl implements SockService {
         return true;
     }
 
+    /**
+     * Регистрирует отпуск носков со склада.
+     *
+     * @param sockDto Объект {@link SockDto} с информацией о носках, которые уходят со склада.
+     * @return true, если отпуск носков успешно зарегистрирован, иначе false.
+     * @throws NotEnoughSocksException Если на складе не хватает носков указанного цвета и процентного содержания хлопка.
+     */
     @Override
     public boolean registerSocksOutcome(SockDto sockDto) {
         if (sockDto.getColor() == null) {
@@ -66,6 +79,15 @@ public class SockServiceImpl implements SockService {
         return true;
     }
 
+    /**
+     * Получает общее количество носков на складе, соответствующих переданным критериям запроса.
+     *
+     * @param color      Цвет носков, по которому нужно выполнить фильтрацию.
+     * @param operation  Оператор сравнения значения количества хлопка в составе носков.
+     *                   Возможные значения: "moreThan", "lessThan", "equal".
+     * @param cottonPart Значение процента хлопка в составе носков для сравнения.
+     * @return Общее количество носков на складе, удовлетворяющих критериям запроса.
+     */
     @Override
     public Integer getSocksCount(String color, String operation, Byte cottonPart) {
         return sockRepository.getSocksCount(color, operation, cottonPart);
